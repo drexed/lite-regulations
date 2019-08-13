@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lite-regulations (1.0.1)
+    lite-regulations (1.0.0)
       activerecord
       activesupport
 
