@@ -6,7 +6,25 @@ RSpec.describe Lite::Regulations::Suspension do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#suspended_at' do
+  describe '#unsuspended' do
+    it 'to be 15' do
+      35.times { klass.create!(suspended_at: Time.current) }
+      15.times { klass.create!(suspended_at: nil) }
+
+      expect(klass.unsuspended.count).to eq(15)
+    end
+  end
+
+  describe '#suspended' do
+    it 'to be 35' do
+      35.times { klass.create!(suspended_at: Time.current) }
+      15.times { klass.create!(suspended_at: nil) }
+
+      expect(klass.suspended.count).to eq(35)
+    end
+  end
+
+  describe '.suspended_at' do
     it 'to be nil' do
       expect(user.suspended_at).to eq(nil)
     end
@@ -25,7 +43,7 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '#unsuspend' do
+  describe '.unsuspend' do
     it 'to be true' do
       user.unsuspend!
 
@@ -33,7 +51,7 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '#suspend' do
+  describe '.suspend' do
     it 'to be false' do
       user.suspend!
 
@@ -41,7 +59,7 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '#unsuspended?' do
+  describe '.unsuspended?' do
     it 'to be true' do
       expect(user.unsuspended?).to eq(true)
     end
@@ -53,7 +71,7 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '#suspended?' do
+  describe '.suspended?' do
     it 'to be false' do
       expect(user.suspended?).to eq(false)
     end
@@ -65,7 +83,7 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '#to_suspension' do
+  describe '.to_suspension' do
     it 'to be "Unsuspended"' do
 
       expect(user.to_suspension).to eq('Unsuspended')
@@ -75,24 +93,6 @@ RSpec.describe Lite::Regulations::Suspension do
       user.suspend!
 
       expect(user.to_suspension).to eq('Suspended')
-    end
-  end
-
-  describe '#unsuspended' do
-    it 'to be 15' do
-      35.times { klass.create!(suspended_at: Time.current) }
-      15.times { klass.create!(suspended_at: nil) }
-
-      expect(klass.unsuspended.count).to eq(15)
-    end
-  end
-
-  describe '#suspended' do
-    it 'to be 35' do
-      35.times { klass.create!(suspended_at: Time.current) }
-      15.times { klass.create!(suspended_at: nil) }
-
-      expect(klass.suspended.count).to eq(35)
     end
   end
 

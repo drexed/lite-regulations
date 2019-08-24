@@ -6,7 +6,25 @@ RSpec.describe Lite::Regulations::Quarantine do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#quarantined_at' do
+  describe '#unquarantined' do
+    it 'to be 15' do
+      35.times { klass.create!(quarantined_at: Time.current) }
+      15.times { klass.create!(quarantined_at: nil) }
+
+      expect(klass.unquarantined.count).to eq(15)
+    end
+  end
+
+  describe '#quarantined' do
+    it 'to be 35' do
+      35.times { klass.create!(quarantined_at: Time.current) }
+      15.times { klass.create!(quarantined_at: nil) }
+
+      expect(klass.quarantined.count).to eq(35)
+    end
+  end
+
+  describe '.quarantined_at' do
     it 'to be nil' do
       expect(user.quarantined_at).to eq(nil)
     end
@@ -25,7 +43,7 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '#unquarantine' do
+  describe '.unquarantine' do
     it 'to be true' do
       user.unquarantine!
 
@@ -33,7 +51,7 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '#quarantine' do
+  describe '.quarantine' do
     it 'to be false' do
       user.quarantine!
 
@@ -41,7 +59,7 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '#unquarantined?' do
+  describe '.unquarantined?' do
     it 'to be true' do
       expect(user.unquarantined?).to eq(true)
     end
@@ -53,7 +71,7 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '#quarantined?' do
+  describe '.quarantined?' do
     it 'to be false' do
       expect(user.quarantined?).to eq(false)
     end
@@ -65,7 +83,7 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '#to_suspension' do
+  describe '.to_suspension' do
     it 'to be "Unquarantined"' do
       expect(user.to_quarantine).to eq('Unquarantined')
     end
@@ -74,24 +92,6 @@ RSpec.describe Lite::Regulations::Quarantine do
       user.quarantine!
 
       expect(user.to_quarantine).to eq('Quarantined')
-    end
-  end
-
-  describe '#unquarantined' do
-    it 'to be 15' do
-      35.times { klass.create!(quarantined_at: Time.current) }
-      15.times { klass.create!(quarantined_at: nil) }
-
-      expect(klass.unquarantined.count).to eq(15)
-    end
-  end
-
-  describe '#quarantined' do
-    it 'to be 35' do
-      35.times { klass.create!(quarantined_at: Time.current) }
-      15.times { klass.create!(quarantined_at: nil) }
-
-      expect(klass.quarantined.count).to eq(35)
     end
   end
 

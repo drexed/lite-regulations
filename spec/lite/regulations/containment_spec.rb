@@ -6,7 +6,25 @@ RSpec.describe Lite::Regulations::Containment do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#contained_at' do
+  describe '#uncontained' do
+    it 'to be 15' do
+      35.times { klass.create!(contained_at: Time.current) }
+      15.times { klass.create!(contained_at: nil) }
+
+      expect(klass.uncontained.count).to eq(15)
+    end
+  end
+
+  describe '#contained' do
+    it 'to be 35' do
+      35.times { klass.create!(contained_at: Time.current) }
+      15.times { klass.create!(contained_at: nil) }
+
+      expect(klass.contained.count).to eq(35)
+    end
+  end
+
+  describe '.contained_at' do
     it 'to be nil' do
       expect(user.contained_at).to eq(nil)
     end
@@ -25,7 +43,7 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '#uncontain' do
+  describe '.uncontain' do
     it 'to be true' do
       user.uncontain!
 
@@ -33,7 +51,7 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '#contain' do
+  describe '.contain' do
     it 'to be false' do
       user.contain!
 
@@ -41,7 +59,7 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '#uncontained?' do
+  describe '.uncontained?' do
     it 'to be true' do
       expect(user.uncontained?).to eq(true)
     end
@@ -53,7 +71,7 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '#contained?' do
+  describe '.contained?' do
     it 'to be false' do
       expect(user.contained?).to eq(false)
     end
@@ -65,7 +83,7 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '#to_containment' do
+  describe '.to_containment' do
     it 'to be "Uncontained"' do
       expect(user.to_containment).to eq('Uncontained')
     end
@@ -74,24 +92,6 @@ RSpec.describe Lite::Regulations::Containment do
       user.contain!
 
       expect(user.to_containment).to eq('Contained')
-    end
-  end
-
-  describe '#uncontained' do
-    it 'to be 15' do
-      35.times { klass.create!(contained_at: Time.current) }
-      15.times { klass.create!(contained_at: nil) }
-
-      expect(klass.uncontained.count).to eq(15)
-    end
-  end
-
-  describe '#contained' do
-    it 'to be 35' do
-      35.times { klass.create!(contained_at: Time.current) }
-      15.times { klass.create!(contained_at: nil) }
-
-      expect(klass.contained.count).to eq(35)
     end
   end
 

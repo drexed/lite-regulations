@@ -6,7 +6,27 @@ RSpec.describe Lite::Regulations::Expiration do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#expires_at' do
+  describe '#unexpired' do
+    it 'to be 35' do
+      10.times { klass.create!(expires_at: Time.current) }
+      35.times { klass.create!(expires_at: Time.current + 30) }
+      15.times { klass.create!(expires_at: nil) }
+
+      expect(klass.unexpired.count).to eq(35)
+    end
+  end
+
+  describe '#expired' do
+    it 'to be 25' do
+      10.times { klass.create!(expires_at: Time.current) }
+      35.times { klass.create!(expires_at: Time.current + 30) }
+      15.times { klass.create!(expires_at: nil) }
+
+      expect(klass.expired.count).to eq(25)
+    end
+  end
+
+  describe '.expires_at' do
     it 'to be nil' do
       expect(user.expires_at).to eq(nil)
     end
@@ -31,7 +51,7 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#unexpire' do
+  describe '.unexpire' do
     it 'to be true' do
       user.unexpire!
 
@@ -39,7 +59,7 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#extend' do
+  describe '.extend' do
     it 'to be true' do
       user.extend!
 
@@ -47,7 +67,7 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#expire' do
+  describe '.expire' do
     it 'to be false' do
       user.expire!
 
@@ -55,7 +75,7 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#unexpired?' do
+  describe '.unexpired?' do
     it 'to be false' do
       expect(user.unexpired?).to eq(false)
     end
@@ -79,7 +99,7 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#expired?' do
+  describe '.expired?' do
     it 'to be true' do
       expect(user.expired?).to eq(true)
     end
@@ -103,7 +123,7 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#to_expiration' do
+  describe '.to_expiration' do
     it 'to be "Expired"' do
       expect(user.to_expiration).to eq('Expired')
     end
@@ -124,26 +144,6 @@ RSpec.describe Lite::Regulations::Expiration do
       user.extend!
 
       expect(user.to_expiration).to eq('Unexpired')
-    end
-  end
-
-  describe '#unexpired' do
-    it 'to be 35' do
-      10.times { klass.create!(expires_at: Time.current) }
-      35.times { klass.create!(expires_at: Time.current + 30) }
-      15.times { klass.create!(expires_at: nil) }
-
-      expect(klass.unexpired.count).to eq(35)
-    end
-  end
-
-  describe '#expired' do
-    it 'to be 25' do
-      10.times { klass.create!(expires_at: Time.current) }
-      35.times { klass.create!(expires_at: Time.current + 30) }
-      15.times { klass.create!(expires_at: nil) }
-
-      expect(klass.expired.count).to eq(25)
     end
   end
 

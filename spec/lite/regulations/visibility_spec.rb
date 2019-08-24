@@ -6,7 +6,25 @@ RSpec.describe Lite::Regulations::Visibility do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#invisible_at' do
+  describe '#visible' do
+    it 'to be 15' do
+      35.times { klass.create!(invisible_at: Time.current) }
+      15.times { klass.create!(invisible_at: nil) }
+
+      expect(klass.visible.count).to eq(15)
+    end
+  end
+
+  describe '#invisible' do
+    it 'to be 35' do
+      35.times { klass.create!(invisible_at: Time.current) }
+      15.times { klass.create!(invisible_at: nil) }
+
+      expect(klass.invisible.count).to eq(35)
+    end
+  end
+
+  describe '.invisible_at' do
     it 'to be nil' do
       expect(user.invisible_at).to eq(nil)
     end
@@ -25,7 +43,7 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '#visible' do
+  describe '.visible' do
     it 'to be true' do
       user.visible!
 
@@ -33,7 +51,7 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '#invisible' do
+  describe '.invisible' do
     it 'to be false' do
       user.invisible!
 
@@ -41,7 +59,7 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '#visible?' do
+  describe '.visible?' do
     it 'to be true' do
       expect(user.visible?).to eq(true)
     end
@@ -53,7 +71,7 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '#invisible?' do
+  describe '.invisible?' do
     it 'to be false' do
       expect(user.invisible?).to eq(false)
     end
@@ -65,7 +83,7 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '#to_visibility' do
+  describe '.to_visibility' do
     it 'to be "Visible"' do
       expect(user.to_visibility).to eq('Visible')
     end
@@ -74,24 +92,6 @@ RSpec.describe Lite::Regulations::Visibility do
       user.invisible!
 
       expect(user.to_visibility).to eq('Invisible')
-    end
-  end
-
-  describe '#visible' do
-    it 'to be 15' do
-      35.times { klass.create!(invisible_at: Time.current) }
-      15.times { klass.create!(invisible_at: nil) }
-
-      expect(klass.visible.count).to eq(15)
-    end
-  end
-
-  describe '#invisible' do
-    it 'to be 35' do
-      35.times { klass.create!(invisible_at: Time.current) }
-      15.times { klass.create!(invisible_at: nil) }
-
-      expect(klass.invisible.count).to eq(35)
     end
   end
 
