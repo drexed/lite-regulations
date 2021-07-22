@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+
 require 'lite/regulations'
 
 spec_path = Pathname.new(File.expand_path('../spec', File.dirname(__FILE__)))
