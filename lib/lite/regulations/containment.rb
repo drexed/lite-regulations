@@ -14,7 +14,7 @@ module Lite
       def contain!
         return true if contained?
 
-        update(contained_at: Time.current)
+        update(contained_at: Lite::Regulations::Base.timestamp)
       end
 
       def contained?

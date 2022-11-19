@@ -9,13 +9,17 @@ module Lite
       # rubocop:disable Style/Lambda
       included do
         scope :expired, -> do
-          where('expires_at IS NULL OR expires_at < ?', Lite::Regulations::Base.timestamp)
+          where("expires_at IS NULL OR expires_at < ?", Lite::Regulations::Base.timestamp)
         end
         scope :unexpired, -> do
-          where('expires_at IS NOT NULL AND expires_at >= ?', Lite::Regulations::Base.timestamp)
+          where("expires_at IS NOT NULL AND expires_at >= ?", Lite::Regulations::Base.timestamp)
         end
       end
       # rubocop:enable Style/Lambda
+
+      def default_expires_in
+        30.minutes
+      end
 
       def expire!
         return true if expires_at.nil?
@@ -29,8 +33,8 @@ module Lite
         Lite::Regulations::Base.timestamp >= expires_at
       end
 
-      def extend!(amount = nil)
-        update(expires_at: extension_date(amount))
+      def extend!(expires_in = nil)
+        update(expires_at: extension_date(expires_in))
       end
 
       def unexpire!
@@ -45,10 +49,10 @@ module Lite
         Lite::Regulations::Base.timestamp < expires_at
       end
 
-      def expires_at_or_time(amount = nil)
+      def expires_at_or_time(expires_in = nil)
         return expires_at if unexpired?
 
-        extension_date(amount)
+        extension_date(expires_in)
       end
 
       def to_expiration
@@ -57,11 +61,8 @@ module Lite
 
       private
 
-      def extension_date(amount = nil)
-        amount ||= 30
-        return amount unless amount.is_a?(Integer)
-
-        Lite::Regulations::Base.timestamp + amount
+      def extension_date(expires_in = nil)
+        Lite::Regulations::Base.timestamp + (expires_in || default_expires_in).to_i
       end
 
     end

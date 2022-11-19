@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Regulations::Activation do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#active' do
-    it 'to be 15' do
+  describe "#active" do
+    it "to be 15" do
       35.times { klass.create!(inactivated_at: Time.current) }
       15.times { klass.create!(inactivated_at: nil) }
 
@@ -15,8 +15,8 @@ RSpec.describe Lite::Regulations::Activation do
     end
   end
 
-  describe '#inactivated' do
-    it 'to be 35' do
+  describe "#inactivated" do
+    it "to be 35" do
       35.times { klass.create!(inactivated_at: Time.current) }
       15.times { klass.create!(inactivated_at: nil) }
 
@@ -24,74 +24,74 @@ RSpec.describe Lite::Regulations::Activation do
     end
   end
 
-  describe '.inactivated_at' do
-    it 'to be nil' do
-      expect(user.inactivated_at).to eq(nil)
+  describe ".inactivated_at" do
+    it "to be nil" do
+      expect(user.inactivated_at).to be_nil
     end
 
-    it 'to be nil when active' do
+    it "to be nil when active" do
       user.inactive!
       user.active!
 
-      expect(user.inactivated_at).to eq(nil)
+      expect(user.inactivated_at).to be_nil
     end
 
-    it 'to not be nil when inactive' do
+    it "to not be nil when inactive" do
       user.inactive!
 
-      expect(user.inactivated_at).not_to eq(nil)
+      expect(user.inactivated_at).not_to be_nil
     end
   end
 
-  describe '.active' do
-    it 'to be true' do
+  describe ".active" do
+    it "to be true" do
       user.active!
 
-      expect(user.active?).to eq(true)
+      expect(user.active?).to be(true)
     end
   end
 
-  describe '.inactive' do
-    it 'to be false' do
+  describe ".inactive" do
+    it "to be false" do
       user.inactive!
 
-      expect(user.active?).to eq(false)
+      expect(user.active?).to be(false)
     end
   end
 
-  describe '.active?' do
-    it 'to be true' do
-      expect(user.active?).to eq(true)
+  describe ".active?" do
+    it "to be true" do
+      expect(user.active?).to be(true)
     end
 
-    it 'to be false' do
+    it "to be false" do
       user.inactive!
 
-      expect(user.active?).to eq(false)
+      expect(user.active?).to be(false)
     end
   end
 
-  describe '.inactive?' do
-    it 'to be false' do
-      expect(user.inactive?).to eq(false)
+  describe ".inactive?" do
+    it "to be false" do
+      expect(user.inactive?).to be(false)
     end
 
-    it 'to be true' do
+    it "to be true" do
       user.inactive!
 
-      expect(user.inactive?).to eq(true)
+      expect(user.inactive?).to be(true)
     end
   end
 
-  describe '.to_activation' do
+  describe ".to_activation" do
     it 'to be "Active"' do
-      expect(user.to_activation).to eq('Active')
+      expect(user.to_activation).to eq("Active")
     end
 
     it 'to be "Inactive"' do
       user.inactive!
 
-      expect(user.to_activation).to eq('Inactive')
+      expect(user.to_activation).to eq("Inactive")
     end
   end
 

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Regulations::Containment do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#uncontained' do
-    it 'to be 15' do
+  describe "#uncontained" do
+    it "to be 15" do
       35.times { klass.create!(contained_at: Time.current) }
       15.times { klass.create!(contained_at: nil) }
 
@@ -15,8 +15,8 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '#contained' do
-    it 'to be 35' do
+  describe "#contained" do
+    it "to be 35" do
       35.times { klass.create!(contained_at: Time.current) }
       15.times { klass.create!(contained_at: nil) }
 
@@ -24,74 +24,74 @@ RSpec.describe Lite::Regulations::Containment do
     end
   end
 
-  describe '.contained_at' do
-    it 'to be nil' do
-      expect(user.contained_at).to eq(nil)
+  describe ".contained_at" do
+    it "to be nil" do
+      expect(user.contained_at).to be_nil
     end
 
-    it 'to be nil when uncontained' do
+    it "to be nil when uncontained" do
       user.contain!
       user.uncontain!
 
-      expect(user.contained_at).to eq(nil)
+      expect(user.contained_at).to be_nil
     end
 
-    it 'to not be nil when contained' do
+    it "to not be nil when contained" do
       user.contain!
 
-      expect(user.contained_at).not_to eq(nil)
+      expect(user.contained_at).not_to be_nil
     end
   end
 
-  describe '.uncontain' do
-    it 'to be true' do
+  describe ".uncontain" do
+    it "to be true" do
       user.uncontain!
 
-      expect(user.uncontained?).to eq(true)
+      expect(user.uncontained?).to be(true)
     end
   end
 
-  describe '.contain' do
-    it 'to be false' do
+  describe ".contain" do
+    it "to be false" do
       user.contain!
 
-      expect(user.uncontained?).to eq(false)
+      expect(user.uncontained?).to be(false)
     end
   end
 
-  describe '.uncontained?' do
-    it 'to be true' do
-      expect(user.uncontained?).to eq(true)
+  describe ".uncontained?" do
+    it "to be true" do
+      expect(user.uncontained?).to be(true)
     end
 
-    it 'to be false' do
+    it "to be false" do
       user.contain!
 
-      expect(user.uncontained?).to eq(false)
+      expect(user.uncontained?).to be(false)
     end
   end
 
-  describe '.contained?' do
-    it 'to be false' do
-      expect(user.contained?).to eq(false)
+  describe ".contained?" do
+    it "to be false" do
+      expect(user.contained?).to be(false)
     end
 
-    it 'to be true' do
+    it "to be true" do
       user.contain!
 
-      expect(user.contained?).to eq(true)
+      expect(user.contained?).to be(true)
     end
   end
 
-  describe '.to_containment' do
+  describe ".to_containment" do
     it 'to be "Uncontained"' do
-      expect(user.to_containment).to eq('Uncontained')
+      expect(user.to_containment).to eq("Uncontained")
     end
 
     it 'to be "Contained"' do
       user.contain!
 
-      expect(user.to_containment).to eq('Contained')
+      expect(user.to_containment).to eq("Contained")
     end
   end
 

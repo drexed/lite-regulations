@@ -1,20 +1,19 @@
 # Activation
 
-#### Usage
+#### Table
 
 ```ruby
-# 1. Add column to table
 class AddRegulationsTimestampColumn < ActiveRecord::Migration
   def change
     t.datetime :inactivated_at
-
-    # - or -
-
     add_column :your_model, :inactivated_at, :datetime
   end
 end
+```
 
-# 2. Include module
+#### Model
+
+```ruby
 class User < ActiveRecord::Base
   include Lite::Regulations::Activation
 end
@@ -26,10 +25,8 @@ end
 user = User.first
 user.inactive!
 user.inactive?      #=> true
-
 user.active!
 user.active?        #=> true
-
 user.to_activation  #=> Returns the visibility state locale string (ex: Active)
 ```
 

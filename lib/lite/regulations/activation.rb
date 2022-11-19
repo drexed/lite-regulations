@@ -24,7 +24,7 @@ module Lite
       def inactive!
         return true if inactive?
 
-        update(inactivated_at: Time.current)
+        update(inactivated_at: Lite::Regulations::Base.timestamp)
       end
 
       def inactive?

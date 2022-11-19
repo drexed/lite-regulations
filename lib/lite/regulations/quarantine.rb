@@ -14,7 +14,7 @@ module Lite
       def quarantine!
         return true if quarantined?
 
-        update(quarantined_at: Time.current)
+        update(quarantined_at: Lite::Regulations::Base.timestamp)
       end
 
       def quarantined?

@@ -4,7 +4,7 @@ module Lite
   module Regulations
     class Railtie < Rails::Railtie
 
-      initializer 'lite-regulations.configure_locales' do |app|
+      initializer "lite-regulations.configure_locales" do |app|
         Array(app.config.i18n.available_locales).each do |locale|
           path = File.expand_path("../../../locales/#{locale}.yml", __FILE__)
           next unless File.file?(path)

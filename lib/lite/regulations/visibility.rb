@@ -14,7 +14,7 @@ module Lite
       def invisible!
         return true if invisible?
 
-        update(invisible_at: Time.current)
+        update(invisible_at: Lite::Regulations::Base.timestamp)
       end
 
       def visible!

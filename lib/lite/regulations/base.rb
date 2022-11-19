@@ -4,7 +4,9 @@ module Lite
   module Regulations
     module Base
 
-      def self.timestamp
+      module_function
+
+      def timestamp
         Time.respond_to?(:current) ? Time.current : Time.now
       end
 

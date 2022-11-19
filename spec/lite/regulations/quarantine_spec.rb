@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Regulations::Quarantine do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#unquarantined' do
-    it 'to be 15' do
+  describe "#unquarantined" do
+    it "to be 15" do
       35.times { klass.create!(quarantined_at: Time.current) }
       15.times { klass.create!(quarantined_at: nil) }
 
@@ -15,8 +15,8 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '#quarantined' do
-    it 'to be 35' do
+  describe "#quarantined" do
+    it "to be 35" do
       35.times { klass.create!(quarantined_at: Time.current) }
       15.times { klass.create!(quarantined_at: nil) }
 
@@ -24,74 +24,74 @@ RSpec.describe Lite::Regulations::Quarantine do
     end
   end
 
-  describe '.quarantined_at' do
-    it 'to be nil' do
-      expect(user.quarantined_at).to eq(nil)
+  describe ".quarantined_at" do
+    it "to be nil" do
+      expect(user.quarantined_at).to be_nil
     end
 
-    it 'to be nil when unquarantined' do
+    it "to be nil when unquarantined" do
       user.quarantine!
       user.unquarantine!
 
-      expect(user.quarantined_at).to eq(nil)
+      expect(user.quarantined_at).to be_nil
     end
 
-    it 'to not be nil when quarantined' do
+    it "to not be nil when quarantined" do
       user.quarantine!
 
-      expect(user.quarantined_at).not_to eq(nil)
+      expect(user.quarantined_at).not_to be_nil
     end
   end
 
-  describe '.unquarantine' do
-    it 'to be true' do
+  describe ".unquarantine" do
+    it "to be true" do
       user.unquarantine!
 
-      expect(user.unquarantined?).to eq(true)
+      expect(user.unquarantined?).to be(true)
     end
   end
 
-  describe '.quarantine' do
-    it 'to be false' do
+  describe ".quarantine" do
+    it "to be false" do
       user.quarantine!
 
-      expect(user.unquarantined?).to eq(false)
+      expect(user.unquarantined?).to be(false)
     end
   end
 
-  describe '.unquarantined?' do
-    it 'to be true' do
-      expect(user.unquarantined?).to eq(true)
+  describe ".unquarantined?" do
+    it "to be true" do
+      expect(user.unquarantined?).to be(true)
     end
 
-    it 'to be false' do
+    it "to be false" do
       user.quarantine!
 
-      expect(user.unquarantined?).to eq(false)
+      expect(user.unquarantined?).to be(false)
     end
   end
 
-  describe '.quarantined?' do
-    it 'to be false' do
-      expect(user.quarantined?).to eq(false)
+  describe ".quarantined?" do
+    it "to be false" do
+      expect(user.quarantined?).to be(false)
     end
 
-    it 'to be true' do
+    it "to be true" do
       user.quarantine!
 
-      expect(user.quarantined?).to eq(true)
+      expect(user.quarantined?).to be(true)
     end
   end
 
-  describe '.to_suspension' do
+  describe ".to_suspension" do
     it 'to be "Unquarantined"' do
-      expect(user.to_quarantine).to eq('Unquarantined')
+      expect(user.to_quarantine).to eq("Unquarantined")
     end
 
     it 'to be "Quarantined"' do
       user.quarantine!
 
-      expect(user.to_quarantine).to eq('Quarantined')
+      expect(user.to_quarantine).to eq("Quarantined")
     end
   end
 

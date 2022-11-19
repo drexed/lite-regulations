@@ -1,20 +1,19 @@
 # Quarantine
 
-#### Usage
+#### Table
 
 ```ruby
-# 1. Add column to table
 class AddRegulationsTimestampColumn < ActiveRecord::Migration
   def change
     t.datetime :quarantined_at
-
-    # - or -
-
     add_column :your_model, :quarantined_at, :datetime
   end
 end
+```
 
-# 2. Include module
+#### Usage
+
+```ruby
 class User < ActiveRecord::Base
   include Lite::Regulations::Quarantine
 end
@@ -26,10 +25,8 @@ end
 user = User.first
 user.unquarantine!
 user.unquarantined? #=> true
-
 user.quarantine!
 user.quarantined?   #=> true
-
 user.to_quarantine  #=> Returns the visibility state locale string (ex: Quarantined)
 ```
 

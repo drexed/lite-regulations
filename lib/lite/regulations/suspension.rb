@@ -14,7 +14,7 @@ module Lite
       def suspend!
         return true if suspended?
 
-        update(suspended_at: Time.current)
+        update(suspended_at: Lite::Regulations::Base.timestamp)
       end
 
       def suspended?

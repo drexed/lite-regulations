@@ -1,20 +1,19 @@
 # Visibility
 
-#### Usage
+#### Table
 
 ```ruby
-# 1. Add column to table
 class AddRegulationsTimestampColumn < ActiveRecord::Migration
   def change
     t.datetime :invisible_at
-
-    # - or -
-
     add_column :your_model, :invisible_at, :datetime
   end
 end
+```
 
-# 2. Include module
+#### Usage
+
+```ruby
 class User < ActiveRecord::Base
   include Lite::Regulations::Visibility
 end
@@ -26,10 +25,8 @@ end
 user = User.first
 user.invisible!
 user.invisible?     #=> true
-
 user.visible!
 user.visible?       #=> true
-
 user.to_visibility  #=> Returns the visibility state locale string (ex: Visible)
 ```
 

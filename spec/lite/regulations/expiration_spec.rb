@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Regulations::Expiration do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#unexpired' do
-    it 'to be 35' do
+  describe "#unexpired" do
+    it "to be 35" do
       10.times { klass.create!(expires_at: Time.current) }
       35.times { klass.create!(expires_at: Time.current + 30) }
       15.times { klass.create!(expires_at: nil) }
@@ -16,8 +16,8 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '#expired' do
-    it 'to be 25' do
+  describe "#expired" do
+    it "to be 25" do
       10.times { klass.create!(expires_at: Time.current) }
       35.times { klass.create!(expires_at: Time.current + 30) }
       15.times { klass.create!(expires_at: nil) }
@@ -26,124 +26,124 @@ RSpec.describe Lite::Regulations::Expiration do
     end
   end
 
-  describe '.expires_at' do
-    it 'to be nil' do
-      expect(user.expires_at).to eq(nil)
+  describe ".expires_at" do
+    it "to be nil" do
+      expect(user.expires_at).to be_nil
     end
 
-    it 'to be nil expired' do
+    it "to be nil expired" do
       user.unexpire!
       user.expire!
 
-      expect(user.expires_at).to eq(nil)
+      expect(user.expires_at).to be_nil
     end
 
-    it 'to not be nil when unexpired' do
+    it "to not be nil when unexpired" do
       user.unexpire!
 
-      expect(user.expires_at).not_to eq(nil)
+      expect(user.expires_at).not_to be_nil
     end
 
-    it 'to not be nil when extended' do
+    it "to not be nil when extended" do
       user.extend!
 
-      expect(user.expires_at).not_to eq(nil)
+      expect(user.expires_at).not_to be_nil
     end
   end
 
-  describe '.unexpire' do
-    it 'to be true' do
+  describe ".unexpire" do
+    it "to be true" do
       user.unexpire!
 
-      expect(user.unexpired?).to eq(true)
+      expect(user.unexpired?).to be(true)
     end
   end
 
-  describe '.extend' do
-    it 'to be true' do
+  describe ".extend" do
+    it "to be true" do
       user.extend!
 
-      expect(user.unexpired?).to eq(true)
+      expect(user.unexpired?).to be(true)
     end
   end
 
-  describe '.expire' do
-    it 'to be false' do
+  describe ".expire" do
+    it "to be false" do
       user.expire!
 
-      expect(user.unexpired?).to eq(false)
+      expect(user.unexpired?).to be(false)
     end
   end
 
-  describe '.unexpired?' do
-    it 'to be false' do
-      expect(user.unexpired?).to eq(false)
+  describe ".unexpired?" do
+    it "to be false" do
+      expect(user.unexpired?).to be(false)
     end
 
-    it 'to be false when expired' do
+    it "to be false when expired" do
       user.expire!
 
-      expect(user.unexpired?).to eq(false)
+      expect(user.unexpired?).to be(false)
     end
 
-    it 'to be true when unexpired' do
+    it "to be true when unexpired" do
       user.unexpire!
 
-      expect(user.unexpired?).to eq(true)
+      expect(user.unexpired?).to be(true)
     end
 
-    it 'to be true when extended' do
+    it "to be true when extended" do
       user.extend!
 
-      expect(user.unexpired?).to eq(true)
+      expect(user.unexpired?).to be(true)
     end
   end
 
-  describe '.expired?' do
-    it 'to be true' do
-      expect(user.expired?).to eq(true)
+  describe ".expired?" do
+    it "to be true" do
+      expect(user.expired?).to be(true)
     end
 
-    it 'to be true when expired' do
+    it "to be true when expired" do
       user.expire!
 
-      expect(user.expired?).to eq(true)
+      expect(user.expired?).to be(true)
     end
 
-    it 'to be false when extended' do
+    it "to be false when extended" do
       user.extend!
 
-      expect(user.expired?).to eq(false)
+      expect(user.expired?).to be(false)
     end
 
-    it 'to be false when unexpired' do
+    it "to be false when unexpired" do
       user.unexpire!
 
-      expect(user.expired?).to eq(false)
+      expect(user.expired?).to be(false)
     end
   end
 
-  describe '.to_expiration' do
+  describe ".to_expiration" do
     it 'to be "Expired"' do
-      expect(user.to_expiration).to eq('Expired')
+      expect(user.to_expiration).to eq("Expired")
     end
 
     it 'to be "Expired" when expired' do
       user.expire!
 
-      expect(user.to_expiration).to eq('Expired')
+      expect(user.to_expiration).to eq("Expired")
     end
 
     it 'to be "Unexpired" when unexpired' do
       user.unexpire!
 
-      expect(user.to_expiration).to eq('Unexpired')
+      expect(user.to_expiration).to eq("Unexpired")
     end
 
     it 'to be "Unexpired" when extended' do
       user.extend!
 
-      expect(user.to_expiration).to eq('Unexpired')
+      expect(user.to_expiration).to eq("Unexpired")
     end
   end
 

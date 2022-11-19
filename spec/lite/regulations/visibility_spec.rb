@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Regulations::Visibility do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#visible' do
-    it 'to be 15' do
+  describe "#visible" do
+    it "to be 15" do
       35.times { klass.create!(invisible_at: Time.current) }
       15.times { klass.create!(invisible_at: nil) }
 
@@ -15,8 +15,8 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '#invisible' do
-    it 'to be 35' do
+  describe "#invisible" do
+    it "to be 35" do
       35.times { klass.create!(invisible_at: Time.current) }
       15.times { klass.create!(invisible_at: nil) }
 
@@ -24,74 +24,74 @@ RSpec.describe Lite::Regulations::Visibility do
     end
   end
 
-  describe '.invisible_at' do
-    it 'to be nil' do
-      expect(user.invisible_at).to eq(nil)
+  describe ".invisible_at" do
+    it "to be nil" do
+      expect(user.invisible_at).to be_nil
     end
 
-    it 'to be nil when visible' do
+    it "to be nil when visible" do
       user.invisible!
       user.visible!
 
-      expect(user.invisible_at).to eq(nil)
+      expect(user.invisible_at).to be_nil
     end
 
-    it 'to not be nil when invisible' do
+    it "to not be nil when invisible" do
       user.invisible!
 
-      expect(user.invisible_at).not_to eq(nil)
+      expect(user.invisible_at).not_to be_nil
     end
   end
 
-  describe '.visible' do
-    it 'to be true' do
+  describe ".visible" do
+    it "to be true" do
       user.visible!
 
-      expect(user.visible?).to eq(true)
+      expect(user.visible?).to be(true)
     end
   end
 
-  describe '.invisible' do
-    it 'to be false' do
+  describe ".invisible" do
+    it "to be false" do
       user.invisible!
 
-      expect(user.visible?).to eq(false)
+      expect(user.visible?).to be(false)
     end
   end
 
-  describe '.visible?' do
-    it 'to be true' do
-      expect(user.visible?).to eq(true)
+  describe ".visible?" do
+    it "to be true" do
+      expect(user.visible?).to be(true)
     end
 
-    it 'to be false' do
+    it "to be false" do
       user.invisible!
 
-      expect(user.visible?).to eq(false)
+      expect(user.visible?).to be(false)
     end
   end
 
-  describe '.invisible?' do
-    it 'to be false' do
-      expect(user.invisible?).to eq(false)
+  describe ".invisible?" do
+    it "to be false" do
+      expect(user.invisible?).to be(false)
     end
 
-    it 'to be true' do
+    it "to be true" do
       user.invisible!
 
-      expect(user.invisible?).to eq(true)
+      expect(user.invisible?).to be(true)
     end
   end
 
-  describe '.to_visibility' do
+  describe ".to_visibility" do
     it 'to be "Visible"' do
-      expect(user.to_visibility).to eq('Visible')
+      expect(user.to_visibility).to eq("Visible")
     end
 
     it 'to be "Invisible"' do
       user.invisible!
 
-      expect(user.to_visibility).to eq('Invisible')
+      expect(user.to_visibility).to eq("Invisible")
     end
   end
 

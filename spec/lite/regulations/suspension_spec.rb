@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Regulations::Suspension do
   let(:klass) { User.include(described_class) }
   let(:user) { klass.create! }
 
-  describe '#unsuspended' do
-    it 'to be 15' do
+  describe "#unsuspended" do
+    it "to be 15" do
       35.times { klass.create!(suspended_at: Time.current) }
       15.times { klass.create!(suspended_at: nil) }
 
@@ -15,8 +15,8 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '#suspended' do
-    it 'to be 35' do
+  describe "#suspended" do
+    it "to be 35" do
       35.times { klass.create!(suspended_at: Time.current) }
       15.times { klass.create!(suspended_at: nil) }
 
@@ -24,75 +24,75 @@ RSpec.describe Lite::Regulations::Suspension do
     end
   end
 
-  describe '.suspended_at' do
-    it 'to be nil' do
-      expect(user.suspended_at).to eq(nil)
+  describe ".suspended_at" do
+    it "to be nil" do
+      expect(user.suspended_at).to be_nil
     end
 
-    it 'to be nil when unsuspended' do
+    it "to be nil when unsuspended" do
       user.suspend!
       user.unsuspend!
 
-      expect(user.suspended_at).to eq(nil)
+      expect(user.suspended_at).to be_nil
     end
 
-    it 'to not be nil when suspended' do
+    it "to not be nil when suspended" do
       user.suspend!
 
-      expect(user.suspended_at).not_to eq(nil)
+      expect(user.suspended_at).not_to be_nil
     end
   end
 
-  describe '.unsuspend' do
-    it 'to be true' do
+  describe ".unsuspend" do
+    it "to be true" do
       user.unsuspend!
 
-      expect(user.unsuspended?).to eq(true)
+      expect(user.unsuspended?).to be(true)
     end
   end
 
-  describe '.suspend' do
-    it 'to be false' do
+  describe ".suspend" do
+    it "to be false" do
       user.suspend!
 
-      expect(user.unsuspended?).to eq(false)
+      expect(user.unsuspended?).to be(false)
     end
   end
 
-  describe '.unsuspended?' do
-    it 'to be true' do
-      expect(user.unsuspended?).to eq(true)
+  describe ".unsuspended?" do
+    it "to be true" do
+      expect(user.unsuspended?).to be(true)
     end
 
-    it 'to be false' do
+    it "to be false" do
       user.suspend!
 
-      expect(user.unsuspended?).to eq(false)
+      expect(user.unsuspended?).to be(false)
     end
   end
 
-  describe '.suspended?' do
-    it 'to be false' do
-      expect(user.suspended?).to eq(false)
+  describe ".suspended?" do
+    it "to be false" do
+      expect(user.suspended?).to be(false)
     end
 
-    it 'to be true' do
+    it "to be true" do
       user.suspend!
 
-      expect(user.suspended?).to eq(true)
+      expect(user.suspended?).to be(true)
     end
   end
 
-  describe '.to_suspension' do
+  describe ".to_suspension" do
     it 'to be "Unsuspended"' do
 
-      expect(user.to_suspension).to eq('Unsuspended')
+      expect(user.to_suspension).to eq("Unsuspended")
     end
 
     it 'to be "Suspended"' do
       user.suspend!
 
-      expect(user.to_suspension).to eq('Suspended')
+      expect(user.to_suspension).to eq("Suspended")
     end
   end
 
